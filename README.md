@@ -117,11 +117,11 @@ BLS (Boneh–Lynn–Shacham) signatures rely on bilinear pairings on elliptic cu
 
 ## AI Usage
 
-Parts of this project (scaffolding, README) were developed with assistance from Claude (Anthropic). All cryptographic logic and analysis was reviewed and understood by the authors. AI usage is declared in accordance with DTU guidelines.
+Parts of this project (scaffolding, README) were developed with assistance from AI. All cryptographic logic and analysis was reviewed and understood by the authors. AI usage is declared in accordance with DTU guidelines.
 
 
 
-##  group 7
-Arman Cheraghvnadi s252657
-Simone Panella s253125
+##  Authors
+Arman Cheraghvnadi s252657,
+Simone Panella s253125,
 Riccardo Lussana s253032
