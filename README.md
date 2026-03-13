@@ -124,4 +124,3 @@ Parts of this project (scaffolding, README) were developed with assistance from 
 ##  Authors
 Arman Cheraghvnadi s252657,
 Simone Panella s253125,
-Riccardo Lussana s253032
