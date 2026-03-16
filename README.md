@@ -1,5 +1,3 @@
-# BLS
-
 # BLS Signatures and Ethereum 2.0
 
 Implementation of the BLS signature scheme using the [CIRCL library](https://github.com/cloudflare/circl) by Cloudflare, written in Go. This project covers key generation, signing, verification, and signature aggregation — as used in the Ethereum 2.0 Proof-of-Stake consensus mechanism.
@@ -7,7 +5,6 @@ Implementation of the BLS signature scheme using the [CIRCL library](https://git
 ---
 
 ## Project Structure
-
 ```
 .
 ├── go.mod
@@ -17,7 +14,7 @@ Implementation of the BLS signature scheme using the [CIRCL library](https://git
 ├── sign.go          # Signing
 ├── verify.go        # Verification
 ├── aggregate.go     # Signature aggregation
-├── bls_test.go      # Test cases
+├── bls_test.go      # Test cases and benchmarks
 └── report/          # Written report (PDF)
 ```
 
@@ -27,7 +24,7 @@ Implementation of the BLS signature scheme using the [CIRCL library](https://git
 
 ### Prerequisites
 
-- [Go](https://go.dev/dl/) 1.21 or later
+- [Go](https://go.dev/dl/) 1.25 or later
 - Internet connection (to fetch the CIRCL dependency on first run)
 
 Verify your Go installation:
@@ -36,7 +33,6 @@ go version
 ```
 
 ### Clone the Repository
-
 ```bash
 git clone https://github.com/armancher/BLS
 cd BLS
@@ -68,11 +64,11 @@ go test ./... -v
 ```
 
 The `-v` flag prints each test name and its result. You should see output like:
-
 ```
 --- PASS: TestKeyGen (0.00s)
---- PASS: TestSignAndVerify (0.00s)
---- PASS: TestAggregation (0.00s)
+--- PASS: TestSignAndVerify (0.01s)
+--- PASS: TestAggregate (0.01s)
+--- PASS: TestAggregate128 (0.26s)
 PASS
 ```
 
@@ -80,7 +76,7 @@ A `PASS` result for all tests confirms the implementation is correct. Any `FAIL`
 
 To run a single test:
 ```bash
-go test -v -run TestAggregation
+go test -v -run TestAggregate128
 ```
 
 ---
@@ -89,15 +85,19 @@ go test -v -run TestAggregation
 
 To benchmark the performance of key generation, signing, verification, and aggregation:
 ```bash
-go test -bench=. -benchmem
+go test -bench="." -run="^$" -v
 ```
 
-Output will show each benchmark's name, number of iterations, time per operation, and memory usage. Example:
+The `-run="^$"` flag skips all tests and only runs benchmarks. Output will look like:
 ```
-BenchmarkSign-8       5000    300000 ns/op    1024 B/op    12 allocs/op
+BenchmarkKeyGen-16          9266     135137 ns/op
+BenchmarkSign-16            1404     850299 ns/op
+BenchmarkVerify-16           614    1933055 ns/op
+BenchmarkAggregate-16        177    6798778 ns/op
+BenchmarkAggregate128-16       5  246721320 ns/op
 ```
 
-Higher iterations and lower `ns/op` indicate better performance.
+Each line shows the benchmark name, number of iterations, and time per operation in nanoseconds. Lower `ns/op` indicates better performance. Note that `BenchmarkAggregate128` simulates a realistic Ethereum 2.0 committee of 128 validators signing, aggregating and verifying in approximately 247ms.
 
 ---
 
@@ -119,8 +119,9 @@ BLS (Boneh–Lynn–Shacham) signatures rely on bilinear pairings on elliptic cu
 
 Parts of this project (scaffolding, README) were developed with assistance from AI. All cryptographic logic and analysis was reviewed and understood by the authors. AI usage is declared in accordance with DTU guidelines.
 
+---
 
+## Authors
 
-##  Authors
-Arman Cheraghvnadi s252657,
-Simone Panella s253125,
+Arman Cheraghvandi - s252657  
+Simone Panella - s253125
