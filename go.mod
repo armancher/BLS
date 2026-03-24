@@ -1,4 +1,4 @@
-module github.com/armancher/BLS/bls
+module github.com/armancher/BLS
 
 go 1.25.0
 
