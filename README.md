@@ -15,7 +15,7 @@ Implementation of the BLS signature scheme using the [CIRCL library](https://git
 ├── verify.go        # Verification
 ├── aggregate.go     # Signature aggregation
 ├── bls_test.go      # Test cases and benchmarks
-└── report/          # Written report (PDF)
+
 ```
 
 ---
@@ -100,6 +100,12 @@ BenchmarkAggregate128-16       5  246721320 ns/op
 Each line shows the benchmark name, number of iterations, and time per operation in nanoseconds. Lower `ns/op` indicates better performance. Note that `BenchmarkAggregate128` simulates a realistic Ethereum 2.0 committee of 128 validators signing, aggregating and verifying in approximately 247ms.
 
 ---
+
+## BLS Signature Demo
+
+  ```bash
+  go run .
+```
 
 ## Dependencies
 
