@@ -1,6 +1,6 @@
 # BLS Signatures and Ethereum 2.0
 
-Implementation of the BLS signature scheme using the [CIRCL library](https://github.com/cloudflare/circl) by Cloudflare, written in Go. This project covers key generation, signing, verification, and signature aggregation — as used in the Ethereum 2.0 Proof-of-Stake consensus mechanism.
+Implementation of the BLS signature scheme using the [CIRCL library](https://github.com/cloudflare/circl) by Cloudflare, written in Go. This project covers key generation, signing, verification, and signature aggregation as used in the Ethereum 2.0 Proof-of-Stake consensus mechanism.
 
 ---
 
@@ -14,7 +14,8 @@ Implementation of the BLS signature scheme using the [CIRCL library](https://git
 ├── sign.go          # Signing
 ├── verify.go        # Verification
 ├── aggregate.go     # Signature aggregation
-├── bls_test.go      # Test cases and benchmarks
+├── main.go          # Demo application showcasing the full BLS workflow
+└── bls_test.go      # Test cases and benchmarks
 
 ```
 
@@ -45,7 +46,7 @@ CIRCL is managed as a Go module. To download it:
 go mod download
 ```
 
-This fetches `github.com/cloudflare/circl` automatically based on `go.mod` and `go.sum` — no manual cloning of CIRCL is needed.
+This fetches `github.com/cloudflare/circl` automatically based on `go.mod` and `go.sum` and no manual cloning of CIRCL is needed.
 
 ### Build
 
@@ -54,7 +55,11 @@ To compile and verify everything builds correctly:
 go build ./...
 ```
 
----
+To run a demo of the code and verify that key generation, signing, and verification work correctly, run:
+
+```bash
+go run .
+```
 
 ## Running the Test Cases
 
@@ -72,12 +77,14 @@ The `-v` flag prints each test name and its result. You should see output like:
 PASS
 ```
 
-A `PASS` result for all tests confirms the implementation is correct. Any `FAIL` indicates an issue with that specific function.
-
 To run a single test:
 ```bash
 go test -v -run TestAggregate128
 ```
+
+A `PASS` result for all tests confirms the implementation is correct. Any `FAIL` indicates an issue with that specific function.
+
+The key generation test ensures that generated keys are valid (non-nil) and that successive executions produce different key pairs, the signing and verification test checks the correctness of the signing algorithm by verifying that a signature is valid when using the correct message and public key, and invalid when either the message or the public key is incorrect. The aggregation test evaluates the ability to combine multiple signatures on different messages, ensuring that aggregate verification succeeds under correct conditions and fails when messages or public keys are altered. Finally, a scalability test extends the aggregation process to 128 participants, validating that the implementation remains correct and consistent under more realistic, larger-scale scenarios.
 
 ---
 
@@ -99,25 +106,11 @@ BenchmarkAggregate128-16       5  246721320 ns/op
 
 Each line shows the benchmark name, number of iterations, and time per operation in nanoseconds. Lower `ns/op` indicates better performance. Note that `BenchmarkAggregate128` simulates a realistic Ethereum 2.0 committee of 128 validators signing, aggregating and verifying in approximately 247ms.
 
----
-
-## BLS Signature Demo
-
-  ```bash
-  go run .
-```
-
 ## Dependencies
 
 | Library | Version | Purpose |
 |---|---|---|
 | [cloudflare/circl](https://github.com/cloudflare/circl) | v1.6.3 | BLS signature primitives and pairing-based elliptic curves |
-
----
-
-## Background
-
-BLS (Boneh–Lynn–Shacham) signatures rely on bilinear pairings on elliptic curves. Their key property is that multiple signatures over the same or different messages can be **aggregated** into a single compact signature, verified in one pairing check. Ethereum 2.0 uses BLS12-381 curve-based BLS signatures for validator attestations, dramatically reducing the on-chain data required to record thousands of validator votes per slot.
 
 ---
 
